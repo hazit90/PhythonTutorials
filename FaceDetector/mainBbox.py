@@ -53,14 +53,14 @@ def main() -> int:
     #create webcam object
     cap = cv2.VideoCapture(0)
 
-    #if webcam is not opened, exit program
     if not cap.isOpened():
         print("Cannot open camera")
         exit()
 
     #load model
     face_detector = ort.InferenceSession(modelPath)
-    color = (255, 128, 0)
+    color = (255, 128, 0) #box color
+    
     while True:
         totalSt = time.time()
         grabSt = time.time()
@@ -75,8 +75,7 @@ def main() -> int:
         for i in range(boxes.shape[0]):
             box = scale(boxes[i, :])
             cv2.rectangle(orig_image, (box[0], box[1]), (box[2], box[3]), color, 4)
-        #     cv2.imshow('', orig_image)
-        #     cv2.waitKey(1)
+
         cv2.imshow('', orig_image)
         #if esc key is pressed, break loop
         
@@ -86,6 +85,5 @@ def main() -> int:
 
         print("Grab: {:.2f}ms, Detect: {:.2f}ms, Total: {:.2f}ms".format(grabDelta * 1000, detectDelta * 1000, totalDelta * 1000))
 
-#if main
 if __name__ == "__main__":
     main() 
